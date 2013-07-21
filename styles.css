@@ -1,0 +1,15 @@
+body {
+    font-family: 'Open Sans', Arial;
+}
+
+#frame {
+    float: right;
+    width: 500px;
+    height: 500px;
+    border: none;
+}
+
+#answer {
+    width: 400px;
+    height: 100px;
+}
