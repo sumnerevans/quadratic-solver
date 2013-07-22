@@ -26,26 +26,18 @@ var QS = {
     },
 
     solveEquation: function () {
-        // Variables for soving the equation
-        var answer;
-        var bSquared;
-        var secondPartOfSqrRt;
-        var sqrRt;
-        var denominatior;
-        var firstPartOfTop;
-        var hasI;
-
-        // A, B, and C variables
-        var a = aInput.value;
-        var b = bInput.value;
-        var c = cInput.value;
-
-        // Solve
-        bSquared = b * b;
-        secondPartOfSqrRt = 4 * a * c;
-        sqrRt = bSquared - secondPartOfSqrRt;
-        denominatior = 2 * a;
-        firstPartOfTop = -b;
+		var a = aInput.value,
+			b = bInput.value,
+			c = cInput.value,
+			
+			bSquared = Math.pow(b, 2),
+			secondPartOfSqrRt = 4 * a * c,
+			sqrRt = bSquared - secondPartOfSqrRt,
+			denominator = 2 * a,
+			firstPartOfTop = -b,
+			
+			answer,
+			hasI;
 
         if (secondPartOfSqrRt > bSquared) { //if the result will have an 'i'
             sqrRt = secondPartOfSqrRt - bSquared;
@@ -64,6 +56,5 @@ var QS = {
 
         // Print the answer to the screen
         answerTextarea.value = answer;
-        console.log(answerTextarea);
     }
 }
