@@ -34,18 +34,35 @@ var QS = {
 			secondPartOfSqrRt = 4 * a * c,
 			sqrRt = bSquared - secondPartOfSqrRt,
 			denominator = 2 * a,
+			denominatorOfFirstPartOfAnswer = denominator,
 			firstPartOfTop = -b,
+			firstPartOfTop2 = firstPartOfTop,
 			
 			answer,
-			hasI = secondPartOfSqrRt > bSquared;
+			hasI = secondPartOfSqrRt > bSquared
 			
-		if (hasI) {
+			i = 0;
+			
+			
+		/* Beautify the answer */
+		
+		// Check to see if the first fraction can be reduced
+		for (i = 2; i < 100000; i++) {
+			if (firstPartOfTop % i === 0 && denominator % i === 0){
+				denominatorOfFirstPartOfAnswer = denominator / i;
+				firstPartOfTop2 = firstPartOfTop / i;
+			}
+		}
+		
+		if (denominator === 0) {
+			answer = 'undefined';
+		} else if (hasI) {
 			sqrRt = secondPartOfSqrRt - bSquared;
 			// Print in columns put firstPartOfTop and the underline and the first denominator for the first colom
             // Print the rest in the next column
             answer = firstPartOfTop + '                      √' + sqrRt + '\n' +
                     '____________________ ± ____________________i\n' +
-                    + denominator + '                      ' + denominator;
+                    + denominatorOfFirstPartOfAnswer + '                      ' + denominator;
 		} else {
 			answer = firstPartOfTop + '±√' + sqrRt + '\n' +
                     '_______________________________________\n' +
@@ -55,4 +72,4 @@ var QS = {
 		// Print the answer to the screen
 		answerTextarea.value = answer;
     }
-}
+};
