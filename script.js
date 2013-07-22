@@ -37,24 +37,22 @@ var QS = {
 			firstPartOfTop = -b,
 			
 			answer,
-			hasI;
-
-        if (secondPartOfSqrRt > bSquared) { //if the result will have an 'i'
-            sqrRt = secondPartOfSqrRt - bSquared;
-            hasI = 'i';
-
-            //Print in columns put firstPartOfTop and the underline and the first denominatior for the first colom
+			hasI = secondPartOfSqrRt > bSquared;
+			
+		if (hasI) {
+			sqrRt = secondPartOfSqrRt - bSquared;
+			//Print in columns put firstPartOfTop and the underline and the first denominator for the first colom
             //Print the rest in the next column
-            answer = firstPartOfTop + "                      √" + sqrRt + "\n" +
-                    "____________________ ± ____________________" + hasI + "\n" +
-                    +denominatior + "                      " + denominatior;
-        } else {
-            answer = firstPartOfTop + "±√" + sqrRt + "\n" +
-                    "_______________________________________" + "\n" +
-                    "  " + denominatior;
-        }
-
-        // Print the answer to the screen
-        answerTextarea.value = answer;
+            answer = firstPartOfTop + '                      √' + sqrRt + '\n' +
+                    '____________________ ± ____________________i\n' +
+                    + denominator + '                      ' + denominator;
+		} else {
+			answer = firstPartOfTop + '±√' + sqrRt + '\n' +
+                    '_______________________________________\n' +
+                    '  ' + denominator;
+		}
+		
+		// Print the answer to the screen
+		answerTextarea.value = answer;
     }
 }
