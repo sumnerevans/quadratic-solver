@@ -3,9 +3,6 @@ var QS = {
     bInput: null,
     cInput: null,
     answerTextarea: null,
-    iframe: null,
-    helpLink: null,
-    aboutLink: null,
 
     setup: function () {
         // Get all of the elements
@@ -13,9 +10,6 @@ var QS = {
         bInput = document.getElementById('b');
         cInput = document.getElementById('c');
         answerTextarea = document.getElementById('answer');
-        iframe = document.getElementById('frame').contentWindow.document;
-        helpLink = document.getElementById('help');
-        aboutLink = document.getElementById('about');
 
         // Load the data from local storage
         if (localStorage.savedAInput) {
@@ -26,11 +20,9 @@ var QS = {
         }
 
         // Add event listeners
-        aInput.addEventListener('keyup', QS.solveEquation, false);
-        bInput.addEventListener('keyup', QS.solveEquation, false);
-        cInput.addEventListener('keyup', QS.solveEquation, false);
-        helpLink.addEventListener('click', QS.printHelp, false);
-        aboutLink.addEventListener('click', QS.printAbout, false);
+        aInput.addEventListener('change', QS.solveEquation, false);
+        bInput.addEventListener('change', QS.solveEquation, false);
+        cInput.addEventListener('change', QS.solveEquation, false);
     },
 
     solveEquation: function () {
@@ -73,13 +65,5 @@ var QS = {
         // Print the answer to the screen
         answerTextarea.value = answer;
         console.log(answerTextarea);
-    },
-
-    printHelp: function () {
-        iframe.body.innerHTML = '<h1>Help</h1><p>This program solves quadratic equations of the format: ax^2 + bx + c. Where "^" means to the power of.<br>Then it solves it using the formula:<br> <span style="text-decoration: underline;">x = -b ± √<span style="text-decoration: overline;">b^2 - 4ac</span></span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2a<br>To get to this format use normal algebraic techniqes. If you do not know how to do this, please consult a book on the subject<br>';
-    },
-
-    printAbout: function () {
-        iframe.body.innerHTML = '<h1>About</h1><p style="font-family: monospace;">Quadratic Equation Solver<br>     v. 1.3.5.13<br>By Summation Tech<br>   Copyright &copy; 2013 Summation Tech. All Rights Reserved';
     }
 }

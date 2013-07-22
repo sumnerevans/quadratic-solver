@@ -1,15 +1,30 @@
 body {
     font-family: 'Open Sans', Arial;
+	background-color: black;
+	padding: 0;
+	margin: 0;
 }
 
-#frame {
+.info {
     float: right;
     width: 500px;
-    height: 500px;
-    border: none;
+	padding: 0 0 20px 40px;
+	border-left: 1px solid darkgrey;
 }
 
 #answer {
     width: 400px;
     height: 100px;
+}
+
+.center {
+	width: 1000px;
+	margin: auto;
+	background-color: white;
+	padding: 20px;
+	height: 500px;
+}
+
+.help-header {
+	margin-top: 0;
 }
