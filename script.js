@@ -41,8 +41,8 @@ var QS = {
 			
 		if (hasI) {
 			sqrRt = secondPartOfSqrRt - bSquared;
-			//Print in columns put firstPartOfTop and the underline and the first denominator for the first colom
-            //Print the rest in the next column
+			// Print in columns put firstPartOfTop and the underline and the first denominator for the first colom
+            // Print the rest in the next column
             answer = firstPartOfTop + '                      √' + sqrRt + '\n' +
                     '____________________ ± ____________________i\n' +
                     + denominator + '                      ' + denominator;
