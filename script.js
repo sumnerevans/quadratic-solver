@@ -28,8 +28,11 @@ var QS = {
     solveEquation: function () {
 		var a = aInput.value,
 			b = bInput.value,
-			c = cInput.value,
+			c = cInput.value;
 			
+			console.log(a, b, c);
+			
+			/*
 			bSquared = Math.pow(b, 2),
 			secondPartOfSqrRt = 4 * a * c,
 			sqrRt = bSquared - secondPartOfSqrRt,
@@ -44,7 +47,7 @@ var QS = {
 			i = 0;
 			
 			
-		/* Beautify the answer */
+		/* Beautify the answer *
 		
 		// Check to see if the first fraction can be reduced
 		for (i = 2; i < 100000; i++) {
@@ -70,6 +73,6 @@ var QS = {
 		}
 		
 		// Print the answer to the screen
-		answerTextarea.value = answer;
+		answerTextarea.value = answer;*/
     }
 };
