@@ -1,15 +1,15 @@
 body {
-    font-family: 'Open Sans', Arial;
-	background-color: black;
-	padding: 0;
-	margin: 0;
+    font-family:'Open Sans', Arial;
+    background-color: #474747;
+    padding: 0;
+    margin: 0;
 }
 
 .info {
     float: right;
     width: 500px;
-	padding: 0 0 20px 40px;
-	border-left: 1px solid darkgrey;
+    padding: 0 0 20px 40px;
+    border-left: 1px solid darkgrey;
 }
 
 #answer {
@@ -18,18 +18,30 @@ body {
 }
 
 .center {
-	width: 1000px;
-	margin: auto;
-	background-color: white;
-	padding: 20px;
-	height: 540px;
-	margin-top: 40px;
+    width: 1000px;
+    margin: auto;
+    background-color: white;
+    padding: 20px;
+    padding-bottom: 10px;
+    height: 460px;
+    margin-top: 40px;
 }
 
 .help-header {
-	margin-top: 0;
+    margin-top: 0;
 }
 
 .title {
-	font-size: 40px;
+    font-size: 40px;
+}
+
+.copyright-footer {
+    clear: both;
+    margin-top: 60px;
+    padding-top: 15px;
+    border-top: 1px solid #BABABA;
+}
+
+.error {
+     color: red;
 }
