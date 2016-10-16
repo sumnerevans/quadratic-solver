@@ -29,14 +29,14 @@ var QS = {
     aInput: null,
     bInput: null,
     cInput: null,
-    answerTextarea: null,
+    answerDiv: null,
 
     setup: function() {
         // Get all of the elements
         this.aInput = document.getElementById('a');
         this.bInput = document.getElementById('b');
         this.cInput = document.getElementById('c');
-        this.answerTextarea = document.getElementById('answer');
+        this.answerDiv = document.getElementById('answer');
 
         // Load the data from local storage
         if (localStorage.savedAInput) {
@@ -56,22 +56,36 @@ var QS = {
     },
 
     printAnswer: function () {
-        var a = parseInt(this.aInput.value, 10);
-        var b = parseInt(this.bInput.value, 10);
-        var c = parseInt(this.cInput.value, 10);
+        var a = parseFloat(this.aInput.value);
+        var b = parseFloat(this.bInput.value);
+        var c = parseFloat(this.cInput.value);
 
         // Print the answer to the screen
         var answerSteps = QS.solveEquation(a, b, c);
 
-        var answerHtml = '';
-        for (var i = 0; i < answerSteps.length; i++) {
-            var currentAnswerStep = answerSteps[i];
-            answerHtml += currentAnswerStep.explanation + '$$' + currentAnswerStep.latex + '$$';
-        }
-        
-        this.answerTextarea.innerHTML = answerHtml;
-        MathJax.Hub.Typeset();
+        if (typeof answerSteps === 'string') {
+            this.answerDiv.innerHTML = answerSteps;
+        } else {
+            var answerLaTeX = '\\begin{align}\n';
 
+            for (var i = 0; i < answerSteps.length; i++) {
+                var currentStep = answerSteps[i];
+
+                answerLaTeX += currentStep.latex;
+
+                if (currentStep.inlineExplanation) {
+                    answerLaTeX += '&&\\text{@0@}'.formatForLatex(currentStep.inlineExplanation);
+                }
+
+                answerLaTeX += ' \\\\\n';
+            }
+
+            answerLaTeX += '\\end{align}';
+
+            this.answerDiv.innerHTML = answerLaTeX;
+        }
+
+        MathJax.Hub.Typeset();
         // Load the values into local storage
         localStorage.savedAInput = a;
         localStorage.savedBInput = b;
@@ -80,121 +94,128 @@ var QS = {
     },
 
     solveEquation: function(a, b, c) {
-        var hasI = ((Math.pow(b, 2) - 4 * a * c) < 0);
-        var underSqrRt = hasI ? (4 * a * c - Math.pow(b, 2)) : (Math.pow(b, 2) - 4 * a * c);
+        var underSqrRt = b * b - 4 * a * c;
+        var isReal = (b * b - 4 * a * c) >= 0;
         var denominator = 2 * a;
+        var squareRoot = Math.sqrt(Math.abs(underSqrRt));
 
-        console.log('a: ', a);
-        console.log('b: ', b);
-        console.log('c: ', c);
-        console.log('hasI:', hasI);
-        console.log('underSqrRt:', underSqrRt);
-        console.log('denominator:', denominator);
+        var answerSteps = [];
 
         // If a = 0, the equation is not quadratic. Solve using x = -c/b 
         if (a === 0) {
             if (b === 0 && c === 0) {
-                return [{
-                    explanation: '<span class="error">Please enter values for a, b and c.</span>',
-                    latex: '',
-                }];
+                return 'Please enter values for a, b and c.';
             } else if (b === 0 && c !== 0) {
-                return [{
-                    explanation: 'Invalid quadratic equation. If $a = b = 0$ and $c \\neq 0$ then the equation says',
-                    latex: '0x^2 + 0x + @0@ = 0 \\implies @0@ = 0'.formatForLatex(c),
-                }, {
-                    explanation: 'which is invalid.',
-                    latex: '',
-                }];
+                return 'Invalid quadratic equation. If $a = b = 0$ and $c \\neq 0$ then the ' +
+                    'equation becomes $$0x^2+0x+@0@ = 0 \\implies @0@ = 0$$'.formatForLatex(c) +
+                    'which is invalid.';
             }
 
-            var latex = 'x = -\\frac{c}{b} = -\\frac{@0@}{@1@}'.formatForLatex(c, b);
+            answerSteps.push(
+                { latex: 'ax^2 + bx + c &= 0' },
+                { latex: '0x^2 + @0@x + @1@ &= 0'.formatForLatex(b, c) },
+                { latex: '@0@x &= -@1@'.formatForLatex(b, c) },
+                { latex: 'x &= -\\frac{@0@}{@1@}'.formatForLatex(c, b) },
+                { latex: 'x &= @0@'.formatForLatex(this.getFractionLaTeX(-c, b)) }
+            );
 
-            var frac = {numerator: c, denominator: b}
-            frac = QS.simplifyFraction(frac);
-
-            if (frac.denominator) {
-                latex += '= @0@\\frac{@1@}{@2@}'.formatForLatex(!frac.isNegative ? '-' : '', Math.abs(frac.numerator), Math.abs(frac.denominator));
-            } else {
-                 latex += '= @0@'.formatForLatex(frac.numerator * -1);
-            }
-
-            return [{
-                explanation: 'Since $a = 0$, the equation is not quadratic so solve using the equation $x = -\\frac{c}{b}$',
-                latex: latex,
-            }];
+            return answerSteps;
         }
 
-        return [{
-            explanation: 'in progress',
-            latex: '0',
-        }];
+        answerSteps.push(
+            { latex: 'x &= \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}' },
+            { latex: '&= \\frac{-@1@ \\pm \\sqrt{@1@^2 - 4(@0@)(@2@)}}{2(@0@)}'.formatForLatex(a, b, c) },
+            { latex: '&=\\frac{-@0@ \\pm \\sqrt{@1@ - @2@}}{@3@}'.formatForLatex(b, b * b, 4 * a * c, denominator) },
+            { latex: '&=\\frac{-@0@ \\pm \\sqrt{@1@}}{@2@}'.formatForLatex(b, underSqrRt, denominator) }
+        );
 
-        // A = B = C = 0 or B = C = 0 & A != 0 or A = C = 0; B != 0
-        if ((a === 0 && b === 0 && c === 0) || (a !== 0 && b === 0 && c === 0) || (a === 0 && b !== 0 && c === 0)) {
-            answer = 0;
-        } else if (a === 0 && b === 0 && c !== 0) {// A = B = 0; C != 0
-            answer = c;
-        }  else if (a === 0 && b !== 0 && c !== 0) {// A = 0; B != 0; C != 0
-            console.log(b, c, b % c, c % b);
-            if (b % c === 0) {
-                answer = -c / b;
-            } else if (c % b === 0) {
-                // Check to see if the first fraction can be reduced
-                for (var i = 2; i < 100000; i++) {
-                    if ((b % i === 0 && c % i === 0)) {
-                        answer = -c / b;
-                    }
+        var isPerfectSquare = this.isPerfectSquare(Math.abs(underSqrRt));
+
+        if (this.isPerfectSquare(Math.abs(underSqrRt))) {
+            if (underSqrRt === 0) {
+                answerSteps.push(
+                    { latex: '&=\\frac{-@0@}{@1@}'.formatForLatex(b, denominator) },
+
+                    // Simplify fraction
+                    { latex: '&=@0@'.formatForLatex(this.getFractionLaTeX(-b, denominator)) }
+                );
+            } else {
+                var firstFractionLatex = this.getFractionLaTeX(-b, denominator);
+
+                answerSteps.push({ latex: '&=\\frac{-@0@}{@1@} \\pm \\frac{\\sqrt{@2@}}{@1@}'
+                    .formatForLatex(b, denominator, underSqrRt) });
+
+                if (!isReal) {
+                    answerSteps.push({latex: '&=\\frac{-@0@}{@1@} \\pm \\frac{\\sqrt{@2@}i}{@1@}'
+                        .formatForLatex(b, denominator, -underSqrRt) })
                 }
-            } else {
-                answer = -c.toString() + '\n________________________________________________\n' + b;
+
+                answerSteps.push(
+                    { latex: '&=@0@ \\pm \\frac{@1@@2@}{@3@}'.formatForLatex(
+                        firstFractionLatex, squareRoot, isReal ? '' : 'i', denominator) },
+                    { latex: '&=@0@ \\pm @1@@2@'.formatForLatex(firstFractionLatex,
+                        this.getFractionLaTeX(squareRoot, denominator), isReal ? '' : 'i')  }
+                );
             }
-        } else if (a !== 0 && b === 0 && c !== 0) {// A != 0; B = 0; C != 0
-
-        } else if (a !== 0 && b !== 0 && c == 0) {// A != 0; B != 0; C = 0
-
-        }
-
-        /*
-        if (a === 0 && b === 0 && c === 0) {
-        answer = '0';
-        } else if (a === 0) {
-        answer = -c.toString() + '\n________________________________________________\n' + b;
-        } else if (b === 0) {
-        answer = '';
-        } else if (c === 0) {
-        }
-
-        /*Beautify the answer */
-        /*
-        // Check to see if the first fraction can be reduced
-        for ( i = 2; i < 100000; i++) {
-        if (firstPartOfNumerator % i === 0 && denominator % i === 0) {
-        denominatorOfFirstPartOfAnswer = denominator / i;
-        firstPartOfTop2 = firstPartOfNumerator / i;
-        }
-        }
-
-        if (hasI) {
-        underSqrRt = secondPartOfSqrRt - bSquared;
-        // Print in columns put firstPartOfNumerator and the underline and
-        // the
-        // first denominator for the first colom
-        // Print the rest in the next column
-        answer = firstPartOfNumerator + '                      √' + underSqrRt +
-        '\n' + '____________________ ± ____________________i\n' +
-        denominatorOfFirstPartOfAnswer + '                      ' + denominator;
         } else {
-        answer = firstPartOfNumerator + '±√' + underSqrRt + '\n' +
-        '_______________________________________\n' + '  ' + denominator;
-        }*/
+            var firstFractionLatex = this.getFractionLaTeX(-b, denominator);
+
+            answerSteps.push({ latex: '&=\\frac{-@0@}{@1@} \\pm \\frac{\\sqrt{@2@}}{@1@}'
+                .formatForLatex(b, denominator, underSqrRt) });
+
+            if (!isReal) {
+                underSqrRt = Math.abs(underSqrRt);
+                answerSteps.push({latex: '&=\\frac{-@0@}{@1@} \\pm \\frac{\\sqrt{@2@}i}{@1@}'
+                    .formatForLatex(b, denominator, underSqrRt) });
+            }
+
+            answerSteps.push(
+                { latex: '&=@0@ \\pm \\frac{\\sqrt{@1@}}{@2@}@3@'.formatForLatex(
+                    firstFractionLatex,
+                    underSqrRt,
+                    denominator,
+                    isReal ? '' : 'i') }
+            );
+
+            // Reduce square root
+            var multiplier = null;
+
+            for (var i = (underSqrRt / 2); i > 0; i--) {
+                if (underSqrRt % i === 0 && this.isPerfectSquare(i)) {
+                    multiplier = Math.sqrt(i);
+                    underSqrRt = underSqrRt / i;
+                    break;
+                }
+            }
+
+            if (multiplier > 1) {
+                answerSteps.push(
+                    { latex: '&=@0@ \\pm \\frac{@1@\\sqrt{@2@}}{@3@}@4@'.formatForLatex(
+                        firstFractionLatex,
+                        multiplier,
+                        underSqrRt,
+                        denominator,
+                        isReal ? '' : 'i') }
+                );
+
+                var secondFrac = this.simplifyFraction(multiplier, denominator);
+
+                answerSteps.push(
+                    { latex: '&=@0@ \\pm \\frac{@1@\\sqrt{@2@}}{@3@}@4@'.formatForLatex(
+                        firstFractionLatex,
+                        secondFrac.numerator !== 1 ? secondFrac.numerator : '',
+                        underSqrRt,
+                        secondFrac.denominator,
+                        isReal ? '' : 'i') }
+                );
+            }
+        }
+
+        return answerSteps;
     },
 
     // http://stackoverflow.com/questions/2941048/how-to-simplify-fractions-in-c
-    simplifyFraction: function(fraction) {
-        var numerator = fraction.numerator;
-        var denominator = fraction.denominator;
-
+    simplifyFraction: function(numerator, denominator) {
         if (numerator === 0) {
             numerator = 0;
             denominator = null;
@@ -219,5 +240,22 @@ var QS = {
         }
 
         return a;
+    },
+
+    isPerfectSquare: function(x) {
+        var closestRoot = Math.floor(Math.sqrt(x));
+        return x - (closestRoot * closestRoot) < 0.00001;
+    },
+
+    getFractionLaTeX: function(numerator, denominator) {
+        // Simplify fraction
+        var isNegative = numerator * denominator < 0;
+        var frac = this.simplifyFraction(Math.abs(numerator), Math.abs(denominator));
+
+        if (frac.denominator === null) {
+            return '{0}{1}'.format(isNegative ? '-': '', frac.numerator);
+        } else {
+            return '@0@\\frac{@1@}{@2@}'.formatForLatex(isNegative ? '-': '', frac.numerator, frac.denominator);
+        }
     },
 };

@@ -7,14 +7,11 @@ body {
 
 .info {
     float: right;
-    width: 500px;
+    width: 260px;
     padding: 0 0 20px 40px;
-    border-left: 1px solid darkgrey;
 }
 
 #answer {
-    width: 400px;
-    height: 100px;
 }
 
 .center {
@@ -22,8 +19,6 @@ body {
     margin: auto;
     background-color: white;
     padding: 20px;
-    padding-bottom: 10px;
-    height: 460px;
     margin-top: 40px;
 }
 
