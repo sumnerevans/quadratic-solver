@@ -4,11 +4,11 @@
 
 all: build
 
-build:
-	cp index.html script.js styles.css builds/
+builds:
+	mkdir -p builds
 
-deploy: build
-	scp -r builds/* sumnerevans@sumnerevans.com:sumnerevans.com/quadratic-solver
+build: | builds
+	cp index.html script.js styles.css builds/
 
 clean:
 	rm -rf builds

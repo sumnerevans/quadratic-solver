@@ -1,0 +1,30 @@
+image: alpine/edge
+packages:
+  - make
+  - rsync
+sources:
+  - https://git.sr.ht/~sumner/quadratic-solver
+secrets:
+  # SSH Known Hosts
+  - a9b7dc2e-293f-4fea-aec7-618689d4e5f2
+  # SSH Deploy Key
+  - f219888a-80af-4275-a777-89e8c7d277f0
+environment:
+  REPO_NAME: quadratic-solver
+  WEBSITE_NAME: qs.sumnerevans.com
+triggers:
+  - action: email
+    condition: failure
+    to: ~sumner/public-inbox@lists.sr.ht
+tasks:
+  - setup: |
+      echo "cd $REPO_NAME" >> ~/.buildenv
+
+  - build: |
+      make build
+
+  # Copy the website over to the server
+  - rsync: |
+      git branch --contains | grep master &&
+        ssh root@deploy.sumnerevans.com "mkdir -p /var/www/${WEBSITE_NAME}" &&
+        rsync -vr --delete-after builds/ root@deploy.sumnerevans.com:/var/www/${WEBSITE_NAME}
