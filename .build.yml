@@ -6,7 +6,7 @@ sources:
   - https://git.sr.ht/~sumner/quadratic-solver
 secrets:
   # SSH Known Hosts
-  - a9b7dc2e-293f-4fea-aec7-618689d4e5f2
+  - 5f8876fe-b2b7-44f8-8ad5-6fa9bffbc52a
   # SSH Deploy Key
   - f219888a-80af-4275-a777-89e8c7d277f0
 environment:
@@ -26,5 +26,5 @@ tasks:
   # Copy the website over to the server
   - rsync: |
       git branch --contains | grep master &&
-        ssh root@deploy.sumnerevans.com "mkdir -p /var/www/${WEBSITE_NAME}" &&
-        rsync -vr --delete-after builds/ root@deploy.sumnerevans.com:/var/www/${WEBSITE_NAME}
+        ssh root@bespin.sumnerevans.com "mkdir -p /var/www/${WEBSITE_NAME}" &&
+        rsync -vr --delete-after builds/ root@bespin.sumnerevans.com:/var/www/${WEBSITE_NAME}
