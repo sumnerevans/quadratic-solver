@@ -23,8 +23,11 @@ tasks:
   - build: |
       make build
 
-  # Copy the website over to the server
   - rsync: |
-      git branch --contains | grep master &&
-        ssh root@bespin.sumnerevans.com "mkdir -p /var/www/${WEBSITE_NAME}" &&
-        rsync -vr --delete-after builds/ root@bespin.sumnerevans.com:/var/www/${WEBSITE_NAME}
+      # Skip if not on master
+      git branch --contains | grep master || echo "Skipping deploy since not on master"
+      git branch --contains | grep master || complete-build
+
+      # Copy the website over to the server
+      ssh root@bespin.sumnerevans.com "mkdir -p /var/www/${WEBSITE_NAME}" &&
+      rsync -vr --delete-after builds/ root@bespin.sumnerevans.com:/var/www/${WEBSITE_NAME}
