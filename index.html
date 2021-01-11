@@ -1,50 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Quadratic Equation Solver</title>
-        <link type="text/css" rel="stylesheet" href="styles.css">
-        <script type="text/javascript" src="script.js"></script>
 
-        <!-- MathJax -->
-        <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
-        <script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-                tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
-            });
-        </script>
-    </head>
-    <body onload="QS.setup()">
-        <div class="center">
-            <h1 class="title">Quadratic Equation Solver</h1>
-            <div class="info">
-                <h1 class="help-header">Help</h1>
-                <p>
-                This program solves quadratic equations of the format:
-                $$ax^2 + bx + c = 0$$
-                Then it solves it using the formula:
-                $$x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$$
-                To get to this format use normal algebraic techniques. If you do not know how to do this, consult a book on the subject.<br>
-                </p>
-            </div>
+<head>
+  <meta charset="utf-8" />
+  <title>Quadratic Equation Solver</title>
+  <link type="text/css" rel="stylesheet" href="styles.css">
+  <script type="text/javascript" src="script.js"></script>
 
-            <label for="a">a:</label>
-            <input type="number" step="any" id="a" value="0">
-            <br>
-            <label for="a">b:</label>
-            <input type="number" step="any" id="b" value="0">
-            <br>
-            <label for="c">c:</label>
-            <input type="number" step="any" id="c" value="0">
-            <br>
-            <br>
+  <!-- MathJax -->
+  <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+    });
+  </script>
+</head>
 
-            <div id="answer"></div>
+<body onload="QS.setup()">
+  <div class="center">
+    <h1 class="title">Quadratic Equation Solver</h1>
+    <div class="info">
+      <h1 class="help-header">Help</h1>
+      <p>
+        This program solves quadratic equations of the format:
+        $$ax^2 + bx + c = 0$$
+        Then it solves it using the formula:
+        $$x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$$
+        To get to this format use normal algebraic techniques. If you do not know how to do this, consult a book on the
+        subject.<br>
+      </p>
+    </div>
 
-            <div class="copyright-footer">
-              Copyright &copy; 2017 Jonathan Sumner Evans. | MIT License | Version 2.0 |
-              <a href="https://github.com/sumnerevans/quadratic-solver">View on GitHub</a>
-            </div>
-        </div>
-    </body>
+    <label for="a">a:</label>
+    <input type="number" step="any" id="a" value="0">
+    <br>
+    <label for="a">b:</label>
+    <input type="number" step="any" id="b" value="0">
+    <br>
+    <label for="c">c:</label>
+    <input type="number" step="any" id="c" value="0">
+    <br>
+    <br>
+
+    <div id="answer"></div>
+
+    <div class="copyright-footer">
+      Copyright &copy; 2020 Sumner Evans | MIT License | Version 2.0 |
+      <a href="https://git.sr.ht/~sumner/quadratic-solver">View on Sourcehut</a>
+    </div>
+  </div>
+</body>
+
 </html>
