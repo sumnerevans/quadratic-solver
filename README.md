@@ -10,5 +10,8 @@ Quadratic Solver uses [MathJax](https://www.mathjax.org/) to display beautifully
 to quadratic equations.
 
 ## Contributing
+
 If you want to contribute to this project, submit patches or start discussions
-on the ~sumner/public-inbox@lists.sr.ht mailing list.
+on the
+[~sumner/public-inbox@lists.sr.ht](https://lists.sr.ht/~sumner/public-inbox)
+mailing list.
