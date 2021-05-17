@@ -5,8 +5,6 @@ packages:
 sources:
   - https://git.sr.ht/~sumner/quadratic-solver
 secrets:
-  # SSH Known Hosts
-  - 5f8876fe-b2b7-44f8-8ad5-6fa9bffbc52a
   # SSH Deploy Key
   - f219888a-80af-4275-a777-89e8c7d277f0
 environment:
@@ -27,6 +25,8 @@ tasks:
       # Skip if not on master
       git branch --contains | grep master || echo "Skipping deploy since not on master"
       git branch --contains | grep master || complete-build
+
+      ssh-keyscan bespin.sumnerevans.com >> ~/.ssh/known_hosts
 
       # Copy the website over to the server
       ssh root@bespin.sumnerevans.com "mkdir -p /var/www/${WEBSITE_NAME}" &&
