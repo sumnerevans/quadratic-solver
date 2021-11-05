@@ -2,8 +2,6 @@ image: alpine/edge
 packages:
   - make
   - rsync
-sources:
-  - https://git.sr.ht/~sumner/quadratic-solver
 secrets:
   # SSH Deploy Key
   - f219888a-80af-4275-a777-89e8c7d277f0
@@ -26,8 +24,8 @@ tasks:
       git branch --contains | grep master || echo "Skipping deploy since not on master"
       git branch --contains | grep master || complete-build
 
-      ssh-keyscan bespin.sumnerevans.com >> ~/.ssh/known_hosts
+      ssh-keyscan morak.sumnerevans.com >> ~/.ssh/known_hosts
 
       # Copy the website over to the server
-      ssh root@bespin.sumnerevans.com "mkdir -p /var/www/${WEBSITE_NAME}" &&
-      rsync -vr --delete-after builds/ root@bespin.sumnerevans.com:/var/www/${WEBSITE_NAME}
+      ssh root@morak.sumnerevans.com "mkdir -p /var/www/${WEBSITE_NAME}" &&
+      rsync -vr --delete-after builds/ root@morak.sumnerevans.com:/var/www/${WEBSITE_NAME}
