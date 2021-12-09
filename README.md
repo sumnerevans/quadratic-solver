@@ -11,7 +11,5 @@ to quadratic equations.
 
 ## Contributing
 
-If you want to contribute to this project, submit patches or start discussions
-on the
-[~sumner/public-inbox@lists.sr.ht](https://lists.sr.ht/~sumner/public-inbox)
-mailing list.
+If you want to contribute to this project, submit a pull request or create an
+issue.
