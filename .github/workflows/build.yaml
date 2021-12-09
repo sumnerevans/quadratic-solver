@@ -1,0 +1,20 @@
+name: "Build and Deploy"
+on:
+  pull_request:
+  push:
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: Make
+        run: make
+      - name: rsync
+        if: github.ref == 'refs/heads/master'
+        uses: up9cloud/action-rsync@v1.3
+        env:
+          HOST: morak.sumnerevans.com
+          KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          SOURCE: ./builds/
+          TARGET: /var/www/qs.sumnerevans.com
+          VERBOSE: true

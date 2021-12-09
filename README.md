@@ -1,6 +1,6 @@
 # quadratic-solver
 
-[![Build Status](https://builds.sr.ht/~sumner/quadratic-solver.svg)](https://builds.sr.ht/~sumner?search=%7Esumner%2Fquadratic-solver)
+[![Build and Deploy](https://github.com/sumnerevans/quadratic-solver/actions/workflows/build.yaml/badge.svg)](https://github.com/sumnerevans/quadratic-solver/actions/workflows/build.yaml)
 
 **LIVE DEMO:** https://qs.sumnerevans.com
 
